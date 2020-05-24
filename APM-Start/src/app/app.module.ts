@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
 // Imports for loading & configuring the in-memory web api
@@ -18,16 +19,17 @@ import { RouterModule } from '@angular/router';
 import { ProductListComponent } from './products/product-list.component';
 import { LoginComponent } from './user/login.component';
 
-@NgModule({
+@NgModule({ 
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     InMemoryWebApiModule.forRoot(ProductData, { delay: 1000 }),
     RouterModule.forRoot([
       {path: 'welcome', component: WelcomeComponent},
       {path: '', redirectTo: 'welcome', pathMatch: 'full'},
       {path: '**', component: PageNotFoundComponent}
-    ]),
+    ], { enableTracing: true}),
     ProductModule,
     UserModule,
     MessageModule
