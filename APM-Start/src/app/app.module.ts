@@ -12,14 +12,15 @@ import { WelcomeComponent } from './home/welcome.component';
 import { PageNotFoundComponent } from './page-not-found.component';
 
 /* Feature Modules */
-import { ProductModule } from './products/product.module';
 import { UserModule } from './user/user.module';
 import { MessageModule } from './messages/message.module';
-import { RouterModule } from '@angular/router';
+import { RouterModule, PreloadAllModules } from '@angular/router';
 import { ProductListComponent } from './products/product-list.component';
 import { LoginComponent } from './user/login.component';
+import { AuthGuard } from './user/auth.guard';
+import { SelectiveStrategy } from './selective-strategy.service';
 
-@NgModule({ 
+@NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -27,10 +28,15 @@ import { LoginComponent } from './user/login.component';
     InMemoryWebApiModule.forRoot(ProductData, { delay: 1000 }),
     RouterModule.forRoot([
       {path: 'welcome', component: WelcomeComponent},
+      {path: 'products',
+        canActivate: [AuthGuard],
+        // canLoad: [AuthGuard],
+        data: { preload: false },
+        loadChildren: () =>
+          import('./products/product.module').then(m => m.ProductModule)},
       {path: '', redirectTo: 'welcome', pathMatch: 'full'},
       {path: '**', component: PageNotFoundComponent}
-    ], { enableTracing: true}),
-    ProductModule,
+    ], {preloadingStrategy: SelectiveStrategy, enableTracing: true}), //preloadingStrategy: PreloadAllModules
     UserModule,
     MessageModule
   ],
