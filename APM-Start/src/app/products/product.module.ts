@@ -18,6 +18,7 @@ import { ProductEditGuard } from './product-edit/product-edit.guard';
       {
         path: '',
         component: ProductListComponent,
+        data: { pageTitle: 'Product List '}
       },
       {
         path: ':id',

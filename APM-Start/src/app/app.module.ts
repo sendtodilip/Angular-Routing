@@ -19,6 +19,7 @@ import { ProductListComponent } from './products/product-list.component';
 import { LoginComponent } from './user/login.component';
 import { AuthGuard } from './user/auth.guard';
 import { SelectiveStrategy } from './selective-strategy.service';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   imports: [
@@ -26,19 +27,9 @@ import { SelectiveStrategy } from './selective-strategy.service';
     BrowserAnimationsModule,
     HttpClientModule,
     InMemoryWebApiModule.forRoot(ProductData, { delay: 1000 }),
-    RouterModule.forRoot([
-      {path: 'welcome', component: WelcomeComponent},
-      {path: 'products',
-        canActivate: [AuthGuard],
-        // canLoad: [AuthGuard],
-        data: { preload: false },
-        loadChildren: () =>
-          import('./products/product.module').then(m => m.ProductModule)},
-      {path: '', redirectTo: 'welcome', pathMatch: 'full'},
-      {path: '**', component: PageNotFoundComponent}
-    ], {preloadingStrategy: SelectiveStrategy, enableTracing: true}), //preloadingStrategy: PreloadAllModules
     UserModule,
-    MessageModule
+    MessageModule,
+    AppRoutingModule,
   ],
   declarations: [
     AppComponent,
